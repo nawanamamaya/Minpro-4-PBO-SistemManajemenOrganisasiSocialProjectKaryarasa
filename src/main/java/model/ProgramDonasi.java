@@ -52,7 +52,7 @@ public class ProgramDonasi extends ProgramSosial implements Disalurkan {
             sudahDisalurkan = true;
             System.out.println("Donasi '" + namaProgram + "' berhasil disalurkan.");
         } else {
-            System.out.println("ERROR: Donasi '" + namaProgram + "' sudah disalurkan sebelumnya!");
+            System.out.println("Donasi '" + namaProgram + "' sudah disalurkan sebelumnya!");
         }
     }
 

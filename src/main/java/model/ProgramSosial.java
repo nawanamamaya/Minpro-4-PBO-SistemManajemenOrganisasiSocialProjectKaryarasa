@@ -38,7 +38,7 @@ public abstract class ProgramSosial {
         if (namaProgram != null && !namaProgram.trim().isEmpty()) {
             this.namaProgram = namaProgram;
         } else {
-            System.out.println(">> ERROR: Nama program tidak boleh kosong!");
+            System.out.println("Nama program tidak boleh kosong!");
             this.namaProgram = "Program Tanpa Nama";
         }
     }
@@ -51,7 +51,7 @@ public abstract class ProgramSosial {
         if (jumlahPeserta > 0) {
             this.jumlahPeserta = jumlahPeserta;
         } else {
-            System.out.println(">> ERROR: Jumlah peserta harus lebih dari 0! Diatur ke 1.");
+            System.out.println("Jumlah peserta harus lebih dari 0! Diatur ke 1.");
             this.jumlahPeserta = 1;
         }
     }
@@ -64,7 +64,7 @@ public abstract class ProgramSosial {
         if (anggaran >= 0) {
             this.anggaran = anggaran;
         } else {
-            System.out.println(">> ERROR: Anggaran tidak boleh negatif!");
+            System.out.println("Anggaran tidak boleh negatif!");
             this.anggaran = 0;
         }
     }
