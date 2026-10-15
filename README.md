@@ -6,139 +6,172 @@ Sistem manajemen program social Karyarasa adalah sistem manajemen program sosial
 Program ini dapat membantu mencatat dan mengelola data program sosial (donasi maupun edukasi) beserta data relawan/pengaju yang ingin mengajukan program tersebut.
 Melalui sistem ini, pengguna dapat menambahkan program sosial baru, melihat daftar seluruh program yang terdaftar, menghapus program berdasarkan ID, serta memperbarui anggaran suatu program. Setiap program memiliki dua kategor spesifik, yaitu Program Donasi (berfokus pada pengumpulan barang/dana) dan Program Edukasi (berfokus pada pelatihan/sesi pembelajaran), yang di mana keduanya merupakan turunan dari satu program sosial umum.
 
+## Penjelasan Struktur Package
+<img width="278" height="223" alt="image" src="https://github.com/user-attachments/assets/51ea04fe-a9af-496d-8a6d-60f06c4cbf6a" />
+
+1. Package com.mycompany.karyarasa: berisi MainApp sebagai entry point. Class ini membuat objek Scanner, KaryarasaView, dan KaryarasaController, lalu menjalankan perulangan menu utama.
+2. Package model: berisi blueprint entitas data dan aturan datanya, yaitu ProgramSosial (abstract), ProgramDonasi, ProgramEdukasi, Relawan, serta interface Disalurkan dan Dilaksanakan.
+3. Package view: berisi KaryarasaView, yang bertugas khusus menampilkan antarmuka konsol (menu, pesan, dan daftar program).
+4. Package controller: berisi KaryarasaController, yang menghubungkan View dan Model. Controller mengatur input (Scanner), mengelola koleksi data (ArrayList<ProgramSosial>), memvalidasi ID unik, serta memanggil method dari Model atau View.
+
 ## Penjelasan Alur Program
 **Inisialisasi**
 
-<img width="500" height="97" alt="image" src="https://github.com/user-attachments/assets/cc5f19de-664b-40e3-9ee9-3e8ea244d7e8" />
+<img width="502" height="85" alt="image" src="https://github.com/user-attachments/assets/713c09db-9406-47d8-922d-4a25073f6fe2" />
 
-Inisialisasi program dimulai dari MainApp yang membuat objek scanner, KaryarasaView, dan KaryarasaController. Saat KaryarasaController dibuat, method muatDataAwak() secara otomatis dipanggil untuk mengisi dua data dummy awal, satunya program donasi dan satu program edukasi ke dalam arraylist program social sehingga data langsung tampil tanpa perlu diinput manual.
+Program dimulai dari MainApp yang membuat objek Scanner, KaryarasaView, dan KaryarasaController. Saat KaryarasaController dibuat, method muatDataAwal() otomatis dipanggil untuk mengisi dua data awal, yaitu satu ProgramDonasi dan satu ProgramEdukasi, ke dalam ArrayList<ProgramSosial> sehingga data langsung tampil tanpa perlu diinput manual.
 
-**Menu Utama**
+### Menu Utama
+<img width="324" height="130" alt="image" src="https://github.com/user-attachments/assets/445bec07-a80b-4d62-8bdd-38efd355807a" />
 
-<img width="410" height="129" alt="image" src="https://github.com/user-attachments/assets/255b56c1-a389-4a46-b139-4a7ef79c9111" />
+Program menampilkan menu yang berulang menggunakan while, dengan 5 pilihan: (1) menambah program sosial sekaligus data relawan/pengaju, (2) menampilkan daftar program, (3) menghapus program, (4) memperbarui anggaran program, dan (5) keluar dari program. Input menu divalidasi dengan try-catch (NumberFormatException) sehingga hanya angka yang diterima dan program tidak berhenti mendadak ketika pengguna salah input.
 
-Pada menu Utama, program menampilkan menu yang akan berulang menggunakan looping while, dengan 5 pilihan. Yaitu, pertama untuk menambah program sosialnya sekaligus mengisi data relawan/pengaju, yang kedua untuk menampilkan daftar program sosial yang sudah terdata, ketiga adalah untuk menghapus program yang sudah terdata, keempat untuk mengupdate atau mengubah data yang sudah tersimpan/terdata, dan yang terakhir adalah untuk keluar dari program berulang atau dari menu Utama. Pada input menu validasi di dalam MainApp sendiri juga menggunakan try-catch agar hanya angka yang diterima (try-catch di dalam Java adalah system pengaman untuk menghadapi kesalahan saat program sedang berjalan. Simpelnya, sistem ini bertugas untuk mendeteksi baris kode yang rusak, menghentikan kerusakan tersebut agar tidak menyebar, dan mengalihkan program ke dalam rencana cadangan yang disiapkan sehingga sistem tidak keluar atau mati secara mendadak).
+### Tambah Program
+<img width="259" height="100" alt="image" src="https://github.com/user-attachments/assets/3892308d-cdbd-4e72-9ecc-ab64a315c8fc" />
 
-**Tambah Program (Opsi 1)**
+Pengguna pertama-tama mengisi data pengaju: nama, kontak, asal lembaga, dan jabatan. Data ini disimpan dalam objek Relawan.
 
-<img width="403" height="99" alt="image" src="https://github.com/user-attachments/assets/e2655994-3ba5-4149-aaab-2be35af67567" />
+<img width="368" height="271" alt="image" src="https://github.com/user-attachments/assets/0e9b25a8-6873-4467-abc5-82882b59ecf5" />
 
-Pada bagian awal, kita akan diminta untuk mengisi data dari relawan/pengaju itu sendiri beserta asal lembaga dan jabatannya di dalam lembaga.
+Selanjutnya pengguna mengisi detail program: ID (dicek agar unik dan tidak kosong), nama, tujuan, jumlah peserta, skala, dan anggaran. Pengguna lalu memilih jenis program. Jika memilih Edukasi, diminta jumlah sesi dan materi utama, lalu dibuat objek ProgramEdukasi. Jika memilih Donasi, diminta jenis barang dan target donasi, lalu dibuat objek ProgramDonasi. Objek yang dibuat disimpan ke ArrayList<ProgramSosial>.
 
-<img width="707" height="275" alt="image" src="https://github.com/user-attachments/assets/c45b22a1-d2da-4e8a-b061-86aa5fd2f172" />
+### Tampilkan Program
+<img width="260" height="324" alt="image" src="https://github.com/user-attachments/assets/2904b197-2492-4c33-b5c9-1401d1693454" />
 
-Setelah itu, baru kita diminta untuk mengisi detail dari data program sosial yang kita ajukan atau ingin data saat ini, beserta dengan targetnya juga. Dan setelah itu, data-data tersebut akan disimpan di dalam ArrayList.
+Sistem menampilkan seluruh program yang tersimpan. Tampilan tiap program berbeda sesuai jenisnya (Donasi menampilkan jenis barang dan target donasi, Edukasi menampilkan jumlah sesi dan materi utama).
 
-**Tampilkan Program (Opsi 2)**
+### Hapus Program
+<img width="282" height="253" alt="image" src="https://github.com/user-attachments/assets/14300c42-0703-460c-a88f-e446b6751d22" />
 
-<img width="481" height="355" alt="image" src="https://github.com/user-attachments/assets/d9bdab6f-5b46-4edd-b1c2-d3b724adb569" />
+Pengguna memasukkan ID program yang ingin dihapus. Sistem mencari program berdasarkan ID (tidak peka huruf besar/kecil), lalu menghapusnya dari ArrayList jika ditemukan.
 
-Dan jika kita memiliki opsi untuk menampilkan data, maka sistem akan menampilkan detail dari data yang sudah kita tambahkan sebelumnya. 
+### Update Anggaran
+<img width="299" height="139" alt="image" src="https://github.com/user-attachments/assets/234aeba3-e108-460f-aaf1-bfcd87ffd14a" />
 
-**Hapus Program (Opsi 3)**
+Pengguna memasukkan ID program, lalu nilai anggaran baru yang divalidasi dan diperbarui melalui setAnggaran().
 
-<img width="228" height="88" alt="image" src="https://github.com/user-attachments/assets/5a1e6370-c098-4ab5-aa47-9b924ce5a969" />
+### Keluar Program
+<img width="426" height="204" alt="image" src="https://github.com/user-attachments/assets/b4efa021-8ee9-482c-9913-afba7aac3070" />
 
-Pada bagian ini, pengguna memasukkan ID program yang ingin dihapus lalu sistem akan mencari data berdasarkan ID lalu menghapusnya dari ArrayList jika ditemukan.
+Menghentikan perulangan utama, menutup Scanner, dan mengakhiri program.
 
-**Update Anggaran (Opsi 4)**
-
-<img width="303" height="98" alt="image" src="https://github.com/user-attachments/assets/4474ff03-b8b6-4ff1-95b5-231d5bd3975b" />
-
-Pada bagian ini, pengguna memasukkan ID program, lalu memasukkan nilai anggaran baru yang akan divalidasi dan diperbarui melalui setter setAnggaran().
-
-**Keluar Program (Opsi 5)**
-
-<img width="506" height="203" alt="image" src="https://github.com/user-attachments/assets/2c192946-3220-4250-8b33-7c2a425f5ea6" />
-
-Menghentikan looping utama dan mengakhiri program.
-
-## Penjelasan Penerapan Konsep OOP Utama
-
-### **Encapsulation (Enkapsulasi)**
-
-Konsep pembungkusan data dan penyembunyian informasi diterapkan dengan ketat pada setiap kelas Model.
- 
+## Penjelasan Penerapan Encapsulation dan Inheritance
+### Enkapsulasi
 **Penerapan Access Modifier**
 
-<img width="317" height="126" alt="image" src="https://github.com/user-attachments/assets/246db77e-7722-4abf-a88e-6c0081a0a7f3" />
+<img width="622" height="292" alt="image" src="https://github.com/user-attachments/assets/e95f0e26-e02b-4335-aeaf-9e26f56e641d" />
 
-<img width="353" height="53" alt="image" src="https://github.com/user-attachments/assets/5e873288-94b4-40b3-bd87-8e223ea662a0" />
+<img width="641" height="241" alt="image" src="https://github.com/user-attachments/assets/e684a1c4-3251-4cef-9eea-ebac3bbcf662" />
 
-<img width="376" height="56" alt="image" src="https://github.com/user-attachments/assets/e5411cc1-afa9-4d4b-afbd-8900e100cebf" />
+<img width="633" height="193" alt="image" src="https://github.com/user-attachments/assets/2b96ff4e-fdf7-47d2-86c1-0a14b87e1fa2" />
 
-<img width="265" height="84" alt="image" src="https://github.com/user-attachments/assets/af599a6c-4f01-428f-9aef-55bc99c15c71" />
+<img width="628" height="204" alt="image" src="https://github.com/user-attachments/assets/3c5d315a-505f-4d20-ba8e-b0c4b1eeb9ed" />
 
-
-Atribut pada kelas dibuat tertutup. Pada ProgramSosial menggunakan protected (agar bisa diakses langsung oleh subclass), sedangkan pada kelas lain seperti ProgramDonasi, ProgramEdukasi, dan Relawan menggunakan private.
+Atribut pada ProgramSosial menggunakan protected agar dapat diakses oleh subclass, sedangkan atribut pada ProgramDonasi, ProgramEdukasi, dan Relawan menggunakan private. Atribut idProgram dibuat final sehingga tidak dapat diubah setelah objek dibuat.
 
 **Getter dan Setter Bersyarat**
 
-Akses ke atribut-atribut tersebut dijembatani melalui method public getter dan setter. Di dalam setter, terdapat validasi logika bisnis. Contohnya:
+<img width="464" height="114" alt="image" src="https://github.com/user-attachments/assets/1a7b0cdf-b582-415c-9ae5-d36afd20f635" />
 
-<img width="273" height="40" alt="image" src="https://github.com/user-attachments/assets/cd395a29-c2f1-466b-b761-c26b37aef24b" />
-<img width="420" height="47" alt="image" src="https://github.com/user-attachments/assets/06fd9aa4-ee64-4c45-bdc2-b2a898bae802" />
+<img width="426" height="112" alt="image" src="https://github.com/user-attachments/assets/a60e31ff-0580-4022-a6fc-deee0816de68" />
 
-Pada setAnggaran() dan setTargetDonasi(), terdapat pengecekan if (anggaran >= 0). Jika pengguna memasukkan angka negatif, sistem akan menolaknya, mencetak pesan error, dan mengatur nilai ke 0.
+Pada setAnggaran() dan setTargetDonasi() terdapat pengecekan nilai tidak boleh negatif. Jika negatif, sistem mencetak pesan error dan mengatur nilai menjadi 0.
 
-<img width="406" height="42" alt="image" src="https://github.com/user-attachments/assets/eef47a80-42ca-4983-8466-1feecb996064" />
-<img width="353" height="46" alt="image" src="https://github.com/user-attachments/assets/431144b1-5eea-4057-b57b-a488a7861551" />
+<img width="475" height="113" alt="image" src="https://github.com/user-attachments/assets/52954b68-aa9d-43d3-9c9a-32aa9eed2c4e" />
 
-Pada setNamaProgram() atau setNama(), terdapat pengecekan agar input tidak boleh kosong (null atau empty).
+<img width="532" height="116" alt="image" src="https://github.com/user-attachments/assets/dee82eb3-40a2-4971-87c9-a975236e7087" />
+
+Pada setNamaProgram() dan setNama() terdapat pengecekan agar input tidak null atau kosong. Constructor juga memanggil setter (bukan assignment langsung), sehingga validasi tetap berlaku saat objek pertama kali dibuat.
 
 **Inheritance (Pewarisan)**
 
-Sistem menerapkan pewarisan untuk menghindari duplikasi kode pada atribut yang berulang.
+<img width="615" height="264" alt="image" src="https://github.com/user-attachments/assets/7842b746-9d10-4327-a4c0-acc393485574" />
 
-<img width="625" height="270" alt="image" src="https://github.com/user-attachments/assets/9bf4db82-5e8d-4e6b-b62b-1633a0341e6c" />
+<img width="481" height="302" alt="image" src="https://github.com/user-attachments/assets/558a6b1b-a2c1-4fb2-835a-34834b041c8a" />
 
-Superclass (Kelas Induk): ProgramSosial. Menyimpan atribut umum yang dimiliki semua program (ID, Nama, Tujuan, Peserta, Skala, Anggaran, dan objek Relawan pengaju).
+<img width="538" height="335" alt="image" src="https://github.com/user-attachments/assets/44bff472-543e-4985-a7bd-163334726d27" />
 
-<img width="644" height="343" alt="image" src="https://github.com/user-attachments/assets/391ea0ac-2993-4d7e-b376-52103e6e847f" />
+<img width="585" height="206" alt="image" src="https://github.com/user-attachments/assets/23705e07-78d2-4387-8f25-28147ae752e3" />
 
-Subclass (Kelas Anak 1): ProgramDonasi. Mewarisi ProgramSosial dan menambahkan atribut spesifik: jenisBarang dan targetDonasi.
+Superclass: ProgramSosial menyimpan atribut umum (ID, nama, tujuan, peserta, skala, anggaran, dan objek Relawan pengaju) serta method konkret cetakDataDasar() yang dipakai ulang oleh subclass.
 
-<img width="683" height="384" alt="image" src="https://github.com/user-attachments/assets/5be40ecc-3c8a-42c4-b06d-388d9946ac14" />
+<img width="640" height="199" alt="image" src="https://github.com/user-attachments/assets/43f3e6d4-c151-46d6-94fb-fbe0b4e28a73" />
 
-Subclass (Kelas Anak 2): ProgramEdukasi. Mewarisi ProgramSosial dan menambahkan atribut spesifik: jumlahSesi dan materiUtama.
+Subclass 1: ProgramDonasi extends ProgramSosial, menambahkan atribut jenisBarang dan targetDonasi
 
-Penggunaan super(). Pada constructor masing-masing subclass, kata kunci super(...) digunakan untuk memanggil constructor dari superclass agar atribut utama tetap terinisialisasi dengan benar.
+<img width="635" height="156" alt="image" src="https://github.com/user-attachments/assets/5988d5d0-5eef-4986-a466-5302b0d479cf" />
 
-## Penjelasan Nilai Tambah
+Subclass 2: ProgramEdukasi extends ProgramSosial, menambahkan atribut jumlahSesi dan materiUtama.
 
-**Struktur MVC (Model-View-Controller)**
+Penggunaan super(): pada constructor masing-masing subclass, super(...) memanggil constructor superclass agar atribut utama terinisialisasi dengan benar.
 
-<img width="212" height="67" alt="image" src="https://github.com/user-attachments/assets/4a956db6-e355-471f-9d3c-85fa3195fd35" />
+Selain itu, ProgramSosial memiliki relasi has-a (composition) dengan Relawan melalui atribut pengaju.
 
-Package model: Berisi blueprint entitas data, yaitu ProgramSosial, ProgramDonasi, ProgramEdukasi, dan Relawan. Package ini murni hanya berisi data dan logika pengaturannya (getter/setter).
+## Penjelasan Penerapan Polymorphism dan Abstraction
 
+**Abstraction (Abstraksi)**
 
-<img width="213" height="28" alt="image" src="https://github.com/user-attachments/assets/870d21d9-d307-4ad8-aef4-d258754b5cd4" />
+<img width="666" height="120" alt="image" src="https://github.com/user-attachments/assets/05643500-52ed-4a13-9519-e6c63102d15b" />
 
-Package view: Berisi KaryarasaView. Bertugas khusus untuk mengurus antarmuka/tampilan konsol (mencetak menu, mencetak pesan, dan menampilkan daftar data). Tidak ada logika pemrosesan data di sini.
+<img width="521" height="118" alt="image" src="https://github.com/user-attachments/assets/586db8cc-e055-4946-abc6-d1f358951812" />
 
-
-<img width="200" height="31" alt="image" src="https://github.com/user-attachments/assets/87524afb-abbf-4f61-9a70-ff67e561500f" />
-
-Package controller: Berisi KaryarasaController. Bertindak sebagai otak program yang menghubungkan View dan Model. Mengatur logika input (Scanner), mengelola koleksi data (ArrayList), melakukan validasi unik, dan memanggil method dari Model atau View.
+1. Abstract class: ProgramSosial dideklarasikan abstract, sehingga tidak dapat diinstansiasi langsung (new ProgramSosial(...) tidak diperbolehkan). Class ini menjadi kerangka umum bagi semua jenis program sosial.
+2. Abstract method: public abstract void tampilkanInfo(); tidak memiliki isi dan wajib di-override oleh setiap subclass konkret. Ini memastikan setiap jenis program pasti punya cara menampilkan informasinya sendiri.
+3. ProgramSosial juga memiliki method konkret (cetakDataDasar(), getter, setter) yang diwariskan ke subclass.
 
 **Polymorphism (Polimorfisme)**
 
-Program ini menerapkan dua jenis polimorfisme sekaligus
+Program menerapkan dua jenis polimorfisme sekaligus.
 
-1. Method Overriding (Dynamic Polymorphism):
+1. Method Overriding
+   
+   <img width="578" height="128" alt="image" src="https://github.com/user-attachments/assets/73de485f-e92c-497e-8d5d-2a35a95f3585" />
 
-   <img width="602" height="195" alt="image" src="https://github.com/user-attachments/assets/3343ae61-3d63-478c-a962-623387cbb7e4" />
+   <img width="575" height="127" alt="image" src="https://github.com/user-attachments/assets/777d55d0-3c59-4f71-8eb0-91ecc4e293b1" />
 
-   Method tampilkanInfo() yang ada di superclass ProgramSosial ditimpa (override) oleh subclass ProgramDonasi dan ProgramEdukasi. Saat method ini dipanggil, masing-masing subclass memanggil super.tampilkanInfo() untuk mencetak data umum terlebih dahulu, lalu mencetak data spesifiknya.
+   Method abstrak tampilkanInfo() di ProgramSosial di-override oleh ProgramDonasi dan ProgramEdukasi. Masing-masing subclass memanggil cetakDataDasar() (method konkret milik superclass) untuk mencetak data umum, lalu mencetak data spesifiknya sendiri.
+   Method dari interface juga di-override: ProgramDonasi meng-override salurkan() dan batalkanPenyaluran(), sedangkan ProgramEdukasi meng-override laksanakan().
 
-   - Dynamic Method Dispatch terjadi pada kelas View. Meskipun ArrayList bertipe <ProgramSosial>, saat perulangan memanggil daftarProgram.get(i).tampilkanInfo(), Java secara dinamis akan menjalankan method milik ProgramDonasi atau ProgramEdukasi sesuai dengan wujud asli objek tersebut saat di-instantiate.
-     
-2. Method Overloading (Static Polymorphism):
+   <img width="598" height="207" alt="image" src="https://github.com/user-attachments/assets/a17a05a9-a6a3-4065-8ae3-33bf9253c319" />
 
-   <img width="562" height="336" alt="image" src="https://github.com/user-attachments/assets/99024e32-edba-42fb-94ea-bb498b7a2e46" />
+   Dynamic method dispatch terjadi di class KaryarasaView. Meskipun ArrayList bertipe ProgramSosial, saat perulangan memanggil daftarProgram.get(i).tampilkanInfo(), Java secara dinamis menjalankan method milik ProgramDonasi atau ProgramEdukasi sesuai wujud asli objeknya.
 
-   Pada kelas ProgramSosial, terdapat dua method dengan nama yang sama namun parameter yang berbeda:
-   - tampilkanInfo(): Menampilkan data secara lengkap.
-   - tampilkanInfo(boolean ringkas): Jika diisi true, hanya akan menampilkan ID, Nama Program, dan Skala saja. (Berguna jika ke depannya butuh menampilkan list dengan tampilan minimalis).
+2. Method Overloading
+   
+   <img width="521" height="143" alt="image" src="https://github.com/user-attachments/assets/f1db36db-fdb3-46d2-9c69-4431f46d300c" />
+
+   Pada ProgramSosial terdapat dua method dengan nama sama namun parameter berbeda:
+   1. tampilkanInfo(): menampilkan data secara lengkap (abstract, di-override subclass).
+   2. tampilkanInfo(boolean ringkas): jika true, hanya menampilkan ID, nama program, dan skala; jika false, memanggil tampilkanInfo() versi lengkap.
+
+## Penjelasan Letak Penerapan Nilai Tambah
+
+**Interface**
+
+<img width="257" height="67" alt="image" src="https://github.com/user-attachments/assets/932aa73e-8c4d-4275-8350-63ee2e5f6091" />
+
+<img width="230" height="84" alt="image" src="https://github.com/user-attachments/assets/d67d708f-ea3c-4559-9be1-30772f105f19" />
+
+Nilai tambah yang diterapkan adalah interface pada package model:
+1. Disalurkan: menggunakan method salurkan(), batalkanPenyaluran() dan diimplementasikan ProgramDonasi. Maksudnya adalah untuk Kemampuan menyalurkan/membatalkan penyaluran donasi
+2. Dilaksanakan: Menggunakan method laksanakan() dan diimplementasikan ProgramEdukasi. Maksudnya adalah untuk Kemampuan melaksanakan program edukasi
+
+
+<img width="462" height="45" alt="image" src="https://github.com/user-attachments/assets/bf3764d6-9e7c-4538-b3f7-e3e23f54496b" />
+
+<img width="557" height="261" alt="image" src="https://github.com/user-attachments/assets/9fc88a7e-3ea2-4dee-b8a6-ded2fb175047" />
+
+<img width="475" height="47" alt="image" src="https://github.com/user-attachments/assets/8b8aafa3-4191-485f-8f2d-e30521d84a55" />
+   
+<img width="543" height="73" alt="image" src="https://github.com/user-attachments/assets/115bb9e4-5591-404c-b20c-086122134533" />
+
+Letak penerapan:
+1. model/Disalurkan.java dan model/Dilaksanakan.java: deklarasi interface.
+2. model/ProgramDonasi.java: class ProgramDonasi extends ProgramSosial implements Disalurkan.
+3. model/ProgramEdukasi.java: class ProgramEdukasi extends ProgramSosial implements Dilaksanakan.
+
+Dengan interface, perilaku yang hanya dimiliki jenis program tertentu dipisahkan dari class abstrak ProgramSosial. Donasi memiliki konsep "disalurkan" dan edukasi memiliki konsep "dilaksanakan"; keduanya dijamin memiliki method tersebut oleh kontrak interface. Selain itu, sebuah class dapat meng-extend satu superclass sekaligus meng-implement interface.
+
+
+
 
